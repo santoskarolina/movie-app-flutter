@@ -9,6 +9,18 @@ late String endPoint;
 
 Future<MoviesReponse> getPopularMovies() async {
   endPoint = 'movie/popular';
+  final url = "$baseUrl$endPoint$key";
+
+  final response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    return modelFromJson(response.body);
+  } else {
+    throw Exception('failed to load data');
+  }
+}
+
+Future<MoviesReponse> getTopRatedMovies() async {
+  endPoint = 'movie/top_rated';
   final url = '$baseUrl$endPoint$key';
 
   final response = await http.get(Uri.parse(url));
@@ -40,17 +52,5 @@ Future<Movie> getMoviebyId(int id) async {
     return movieFromJson(response.body);
   } else {
     throw Exception('failed to load data');
-  }
-}
-
-Future<MoviesReponse> getTopRatedMovies() async {
-  endPoint = 'movie/top_rated';
-  final url = '$baseUrl$endPoint$key';
-
-  final response = await http.get(Uri.parse(url));
-  if (response.statusCode == 200) {
-    return modelFromJson(response.body);
-  } else {
-    throw Exception('failed to load dta');
   }
 }

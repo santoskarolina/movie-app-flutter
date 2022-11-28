@@ -1,4 +1,4 @@
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:movie_app/models/movie.model.dart';
 import 'package:movie_app/utils/constants.dart';
 
@@ -11,9 +11,10 @@ Future<MoviesReponse> getPopularMovies() async {
   endPoint = 'movie/popular';
   final url = "$baseUrl$endPoint$key";
 
-  final response = await http.get(Uri.parse(url));
+  final response = await Dio().get(url);
+
   if (response.statusCode == 200) {
-    return modelFromJson(response.body);
+    return MoviesReponse.fromJson(response.data);
   } else {
     throw Exception('failed to load data');
   }
@@ -22,10 +23,10 @@ Future<MoviesReponse> getPopularMovies() async {
 Future<MoviesReponse> getTopRatedMovies() async {
   endPoint = 'movie/top_rated';
   final url = '$baseUrl$endPoint$key';
+  final response = await Dio().get(url);
 
-  final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
-    return modelFromJson(response.body);
+    return MoviesReponse.fromJson(response.data);
   } else {
     throw Exception('failed to load data');
   }
@@ -34,10 +35,10 @@ Future<MoviesReponse> getTopRatedMovies() async {
 Future<MoviesReponse> getPopularTvShows() async {
   endPoint = 'tv/popular';
   final url = '$baseUrl$endPoint$key';
+  final response = await Dio().get(url);
 
-  final response = await http.get(Uri.parse(url));
   if (response.statusCode == 200) {
-    return modelFromJson(response.body);
+    return MoviesReponse.fromJson(response.data);
   } else {
     throw Exception('failed to load data');
   }
@@ -47,9 +48,9 @@ Future<Movie> getMoviebyId(int id) async {
   endPoint = 'movie/$id';
   final url = '$baseUrl$endPoint$key';
 
-  final response = await http.get(Uri.parse(url));
+  final response = await Dio().get(url);
   if (response.statusCode == 200) {
-    return movieFromJson(response.body);
+    return Movie.fromJson2(response.data);
   } else {
     throw Exception('failed to load data');
   }

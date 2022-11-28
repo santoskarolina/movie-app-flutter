@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-MoviesReponse modelFromJson(String str) =>
-    MoviesReponse.fromJson(json.decode(str));
+MoviesReponse modelFromJson(String data) =>
+    MoviesReponse.fromJson(json.decode(data));
 
 String modelToJson(MoviesReponse data) => json.encode(data.toJson());
 Movie movieFromJson(String data) => Movie.fromJson2(json.decode(data));

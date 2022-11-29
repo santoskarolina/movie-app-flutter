@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/pages/movieDatails.dart';
 import 'package:movie_app/services/service.dart';
 
-Widget MovieBox(data, index, context) {
+Widget MovieBox(data, index, context, bool movie) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 3),
     child: Column(
@@ -13,8 +13,10 @@ Widget MovieBox(data, index, context) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        MovieDetails(movieID: data[index].id)));
+                    builder: (context) => MovieDetails(
+                          movieID: data[index].id,
+                          movie: movie,
+                        )));
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20),

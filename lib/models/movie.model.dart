@@ -1,11 +1,5 @@
 import 'dart:convert';
 
-MoviesReponse modelFromJson(String data) =>
-    MoviesReponse.fromJson(json.decode(data));
-
-String modelToJson(MoviesReponse data) => json.encode(data.toJson());
-Movie movieFromJson(String data) => Movie.fromJson2(json.decode(data));
-
 class MoviesReponse {
   MoviesReponse({
     this.page,
@@ -36,28 +30,29 @@ class MoviesReponse {
 }
 
 class Movie {
-  Movie({
-    this.adult,
-    this.backdropPath,
-    this.id,
-    this.title,
-    this.originalTitle,
-    this.overview,
-    this.posterPath,
-    this.genreIds,
-    this.popularity,
-    this.releaseDate,
-    this.mediaType,
-    this.video,
-    this.voteAverage,
-    this.voteCount,
-    this.name,
-    this.runtime,
-    this.originalName,
-    this.genres,
-    this.firstAirDate,
-    this.originCountry,
-  });
+  Movie(
+      {this.adult,
+      this.backdropPath,
+      this.id,
+      this.title,
+      this.originalTitle,
+      this.overview,
+      this.posterPath,
+      this.genreIds,
+      this.popularity,
+      this.releaseDate,
+      this.mediaType,
+      this.video,
+      this.voteAverage,
+      this.voteCount,
+      this.seasons,
+      this.name,
+      this.runtime,
+      this.originalName,
+      this.genres,
+      this.firstAirDate,
+      this.originCountry,
+      this.lastEpisode});
 
   bool? adult;
   String? backdropPath;
@@ -79,6 +74,8 @@ class Movie {
   String? originalName;
   DateTime? firstAirDate;
   List<String>? originCountry;
+  List<Seasson>? seasons;
+  LastEpisode? lastEpisode;
 
   // list all movies
   factory Movie.fromJson(Map<String, dynamic> json) => Movie(
@@ -108,9 +105,11 @@ class Movie {
         mediaType: mediaTypeValues.map[json["media_type"]],
       );
 
-// list all movies
+//movie by id
   factory Movie.fromJson2(Map<String, dynamic> json) => Movie(
         adult: json["adult"],
+        seasons:
+            List<Seasson>.from(json["seasons"].map((x) => Seasson.fromJson(x))),
         backdropPath: json["backdrop_path"],
         id: json["id"],
         title: json["title"],
@@ -135,6 +134,7 @@ class Movie {
             ? null
             : List<String>.from(json["origin_country"].map((x) => x)),
         mediaType: mediaTypeValues.map[json["media_type"]],
+        lastEpisode: LastEpisode.fromJson(json["last_episode_to_air"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -179,4 +179,62 @@ class EnumValues<T> {
     reverseMap;
     return reverseMap;
   }
+}
+
+class Seasson {
+  Seasson(
+      {this.airDate,
+      this.episodeCount,
+      this.id,
+      this.name,
+      this.overview,
+      this.posterPath,
+      this.seassonNumber});
+
+  DateTime? airDate;
+  int? episodeCount;
+  int? id;
+  String? name;
+  String? overview;
+  String? posterPath;
+  int? seassonNumber;
+
+  factory Seasson.fromJson(Map<String, dynamic> json) => Seasson(
+        airDate:
+            json["air_date"] == null ? null : DateTime.parse(json["air_date"]),
+        episodeCount: json["episode_count"],
+        id: json["id"],
+        name: json["name"],
+        overview: json["overview"],
+        posterPath: json["poster_path"],
+        seassonNumber: json["season_number"],
+      );
+}
+
+class LastEpisode {
+  LastEpisode({
+    this.airDate,
+    this.episodeNumber,
+    this.id,
+    this.name,
+    this.overview,
+    this.stillPath,
+  });
+
+  DateTime? airDate;
+  int? episodeNumber;
+  int? id;
+  String? name;
+  String? overview;
+  String? stillPath;
+
+  factory LastEpisode.fromJson(Map<String, dynamic> json) => LastEpisode(
+        airDate:
+            json["air_date"] == null ? null : DateTime.parse(json["air_date"]),
+        episodeNumber: json["episode_number"],
+        id: json["id"],
+        name: json["name"],
+        overview: json["overview"],
+        stillPath: json["still_path"],
+      );
 }

@@ -7,9 +7,11 @@ class MoviesList extends StatelessWidget {
     Key? key,
     required this.headlineText,
     required this.future,
+    required this.movie,
   }) : super(key: key);
 
   final String headlineText;
+  final bool movie;
   final Future<MoviesReponse> future;
 
   @override
@@ -37,7 +39,7 @@ class MoviesList extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: data!.length,
                     itemBuilder: (context, index) {
-                      return MovieBox(data, index, context);
+                      return MovieBox(data, index, context, movie);
                     },
                   ),
                 ),

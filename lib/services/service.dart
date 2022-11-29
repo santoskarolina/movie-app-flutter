@@ -55,3 +55,15 @@ Future<Movie> getMoviebyId(int id) async {
     throw Exception('failed to load data');
   }
 }
+
+Future<Movie> getTVbyId(int id) async {
+  endPoint = 'tv/$id';
+  final url = '$baseUrl$endPoint$key';
+
+  final response = await Dio().get(url);
+  if (response.statusCode == 200) {
+    return Movie.fromJson2(response.data);
+  } else {
+    throw Exception('failed to load data');
+  }
+}

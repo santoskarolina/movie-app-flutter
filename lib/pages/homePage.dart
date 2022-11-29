@@ -49,17 +49,20 @@ class _MyHomePageState extends State<MyHomePage> {
           HeaderComp(),
           SearchComp(),
           MoviesList(
-            headlineText: 'Filmes populares',
+            headlineText: 'Populat movies',
             future: popularMoviesFuture!,
+            movie: true,
           ),
           MoviesList(
-            headlineText: 'Series populares',
-            future: popularTvFuture!,
-          ),
-          MoviesList(
-            headlineText: 'Filmes mais votados',
+            headlineText: 'Top rated',
             future: topRatedMovies!,
-          )
+            movie: true,
+          ),
+          MoviesList(
+            headlineText: 'Popular tv shows',
+            future: popularTvFuture!,
+            movie: false,
+          ),
         ],
       ),
     );

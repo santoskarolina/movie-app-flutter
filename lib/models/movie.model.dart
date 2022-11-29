@@ -41,7 +41,6 @@ class Movie {
       this.genreIds,
       this.popularity,
       this.releaseDate,
-      this.mediaType,
       this.video,
       this.voteAverage,
       this.voteCount,
@@ -64,7 +63,6 @@ class Movie {
   List<int>? genreIds;
   double? popularity;
   DateTime? releaseDate;
-  MediaType? mediaType;
   bool? video;
   double? voteAverage;
   int? voteCount;
@@ -102,7 +100,6 @@ class Movie {
         originCountry: json["origin_country"] == null
             ? null
             : List<String>.from(json["origin_country"].map((x) => x)),
-        mediaType: mediaTypeValues.map[json["media_type"]],
       );
 
 //movie by id
@@ -133,7 +130,6 @@ class Movie {
         originCountry: json["origin_country"] == null
             ? null
             : List<String>.from(json["origin_country"].map((x) => x)),
-        mediaType: mediaTypeValues.map[json["media_type"]],
         lastEpisode: LastEpisode.fromJson(json["last_episode_to_air"]),
       );
 
@@ -162,23 +158,6 @@ class Movie {
             ? null
             : List<dynamic>.from(originCountry!.map((x) => x)),
       };
-}
-
-enum MediaType { movie, tv }
-
-final mediaTypeValues =
-    EnumValues({"movie": MediaType.movie, "tv": MediaType.tv});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap;
-    return reverseMap;
-  }
 }
 
 class Seasson {

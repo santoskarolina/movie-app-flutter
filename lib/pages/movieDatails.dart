@@ -55,8 +55,8 @@ class _MovieDetailsState extends State<MovieDetails> {
                     centerTitle: true,
                     title: Text(
                       widget.movie
-                          ? '${movieResponse?.originalTitle}'
-                          : '${movieResponse?.originalName}',
+                          ? '${movieResponse.originalTitle}'
+                          : '${movieResponse.originalName}',
                       style: const TextStyle(
                         fontSize: 22.0,
                         color: Colors.white,
@@ -68,7 +68,7 @@ class _MovieDetailsState extends State<MovieDetails> {
                     background: Stack(
                       fit: StackFit.expand,
                       children: <Widget>[
-                        movieResponse!.backdropPath != null
+                        movieResponse.backdropPath != null
                             ? Image.network(
                                 '$imageUrl${movieResponse.backdropPath}',
                                 fit: BoxFit.cover,

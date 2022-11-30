@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/models/movie.model.dart';
 import 'package:movie_app/services/service.dart';
+import 'package:movie_app/widgets/castWidget.dart';
 import 'package:movie_app/widgets/circleMovieInfos.dart';
+import 'package:movie_app/widgets/moviesList.dart';
 
 class MovieDetails extends StatefulWidget {
   const MovieDetails({
@@ -18,14 +20,17 @@ class MovieDetails extends StatefulWidget {
 
 class _MovieDetailsState extends State<MovieDetails> {
   late Future<Movie>? movieFuture;
+  late Future<MoviesReponse> simularMoviesFuture;
+  late Future<Cast> castFuture;
   var noImage = 'https://www.kibrispdr.org/data/753/no-image-found-png-23.png';
 
   @override
   void initState() {
     movieFuture =
         widget.movie ? getMoviebyId(widget.movieID) : getTVbyId(widget.movieID);
+    simularMoviesFuture = getSimilarMovies(widget.movieID, widget.movie);
+    castFuture = getCast(widget.movieID, widget.movie);
     super.initState();
-    print(widget.movieID);
   }
 
   @override
@@ -111,7 +116,14 @@ class _MovieDetailsState extends State<MovieDetails> {
               ],
             );
           } else {
-            return const SizedBox.shrink();
+            return Container(
+              decoration:
+                  const BoxDecoration(color: Color.fromARGB(255, 1, 21, 36)),
+              height: MediaQuery.of(context).size.height,
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
           }
         },
       ),
@@ -122,14 +134,14 @@ class _MovieDetailsState extends State<MovieDetails> {
     return Container(
         padding: const EdgeInsets.all(20.0),
         // height: MediaQuery.of(context).size.width,
-        color: Colors.black,
+        color: const Color.fromARGB(255, 1, 21, 36),
         child: Column(
           children: [
             Wrap(
               children: List.generate(
                   movieResponse.genres!.length,
                   (genreIndex) => Padding(
-                        padding: const EdgeInsets.only(right: 10, top: 4),
+                        padding: const EdgeInsets.all(2),
                         child: Chip(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
@@ -178,107 +190,114 @@ class _MovieDetailsState extends State<MovieDetails> {
             const SizedBox(
               height: 10.0,
             ),
-            Container(
-              alignment: Alignment.centerLeft,
-              child: const Text('Seassons',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 181, 181, 181),
-                      fontSize: 18.0)),
+            widget.movie
+                ? const SizedBox(height: 0.0)
+                : Container(
+                    padding: const EdgeInsets.only(
+                        left: 20.0, right: 20.0, top: 10.0),
+                    alignment: Alignment.centerLeft,
+                    child: Text('${movieResponse.seasons!.length} Seassons',
+                        textAlign: TextAlign.start,
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 181, 181, 181),
+                            fontSize: 18.0)),
+                  ),
+            const SizedBox(
+              height: 10.0,
             ),
-            Wrap(
-              children: List.generate(
-                  movieResponse.seasons!.length,
-                  (index) => Padding(
-                        padding: const EdgeInsets.only(right: 10, top: 4),
-                        child: Chip(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          side: const BorderSide(width: 0),
-                          backgroundColor:
-                              const Color.fromARGB(255, 79, 73, 73),
-                          label: Text(
-                            movieResponse.seasons![index].name!,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      )),
-            ),
+            MoviesList(
+                headlineText: 'Similar movies',
+                future: simularMoviesFuture,
+                movie: widget.movie),
+            widget.movie
+                ? const SizedBox(
+                    height: 0,
+                  )
+                : Container(
+                    padding: const EdgeInsets.only(
+                        left: 20.0, right: 20.0, top: 10.0),
+                    alignment: Alignment.centerLeft,
+                    child: const Text('Last Epsoide to air',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            fontSize: 18.0)),
+                  ),
             const SizedBox(
               height: 10.0,
             ),
             Container(
               alignment: Alignment.centerLeft,
-              child: const Text('Last Epsoide to air',
-                  textAlign: TextAlign.start,
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      fontSize: 18.0)),
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.symmetric(horizontal: 3),
+              padding:
+                  const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  GestureDetector(
-                    onTap: () {},
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.network(
-                        movieResponse.lastEpisode?.stillPath != null
-                            ? '$imageUrl${movieResponse.lastEpisode?.stillPath!}'
-                            : noImage,
-                        height: 240,
-                        width: 170,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
+                  widget.movie
+                      ? const SizedBox(
+                          height: 0,
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.network(
+                            movieResponse.lastEpisode?.stillPath != null
+                                ? '$imageUrl${movieResponse.lastEpisode?.stillPath!}'
+                                : noImage,
                             height: 240,
                             width: 170,
-                            color: Colors.grey,
-                          );
-                        },
-                      ),
-                    ),
-                  ),
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                height: 240,
+                                width: 170,
+                                color: Colors.grey,
+                              );
+                            },
+                          ),
+                        ),
                   const SizedBox(
                     height: 5,
                   ),
-                  Container(
-                    width: 170,
-                    height: 50,
-                    margin: const EdgeInsets.only(left: 5),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(movieResponse.lastEpisode!.name!,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 20.0)),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 5),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                            movieResponse.lastEpisode!.airDate!
-                                .toString()
-                                .split('-')[0],
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 16.0)),
-                      ],
-                    ),
-                  ),
+                  widget.movie
+                      ? const SizedBox(
+                          height: 0,
+                        )
+                      : Container(
+                          width: 170,
+                          height: 50,
+                          margin: const EdgeInsets.only(left: 5),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(movieResponse.lastEpisode!.name!,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 20.0)),
+                            ],
+                          ),
+                        ),
+                  widget.movie
+                      ? const SizedBox(
+                          height: 0,
+                        )
+                      : Container(
+                          margin: const EdgeInsets.only(left: 5),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                  movieResponse.lastEpisode!.airDate!
+                                      .toString()
+                                      .split('-')[0],
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 16.0)),
+                            ],
+                          ),
+                        ),
+                  CastList(headlineText: 'Cast', future: castFuture),
                 ],
               ),
             )

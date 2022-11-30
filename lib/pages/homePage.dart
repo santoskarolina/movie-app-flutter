@@ -32,9 +32,8 @@ class _MyHomePageState extends State<MyHomePage> {
         body: Stack(
       children: [
         Container(
-          decoration: const BoxDecoration(
-            color: Color.fromARGB(255, 26, 24, 24),
-          ),
+          decoration:
+              const BoxDecoration(color: Color.fromARGB(255, 1, 21, 36)),
         ),
         homeBox(),
       ],
@@ -49,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
           HeaderComp(),
           SearchComp(),
           MoviesList(
-            headlineText: 'Populat movies',
+            headlineText: 'Popular movies',
             future: popularMoviesFuture!,
             movie: true,
           ),

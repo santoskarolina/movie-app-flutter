@@ -105,8 +105,10 @@ class Movie {
 //movie by id
   factory Movie.fromJson2(Map<String, dynamic> json) => Movie(
         adult: json["adult"],
-        seasons:
-            List<Seasson>.from(json["seasons"].map((x) => Seasson.fromJson(x))),
+        seasons: json["seasons"] == null
+            ? null
+            : List<Seasson>.from(
+                json["seasons"].map((x) => Seasson.fromJson(x))),
         backdropPath: json["backdrop_path"],
         id: json["id"],
         title: json["title"],
@@ -130,7 +132,9 @@ class Movie {
         originCountry: json["origin_country"] == null
             ? null
             : List<String>.from(json["origin_country"].map((x) => x)),
-        lastEpisode: LastEpisode.fromJson(json["last_episode_to_air"]),
+        lastEpisode: json["last_episode_to_air"] == null
+            ? null
+            : LastEpisode.fromJson(json["last_episode_to_air"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -215,5 +219,46 @@ class LastEpisode {
         name: json["name"],
         overview: json["overview"],
         stillPath: json["still_path"],
+      );
+}
+
+class Cast {
+  Cast({this.id, this.cast});
+
+  int? id;
+  List<CastPerson>? cast;
+
+  factory Cast.fromJson(Map<String, dynamic> json) => Cast(
+        id: json["id"],
+        cast: List<CastPerson>.from(
+            json["cast"].map((x) => CastPerson.fromJson(x))),
+      );
+}
+
+class CastPerson {
+  CastPerson(
+      {this.adult,
+      this.gender,
+      this.knownForDepartment,
+      this.name,
+      this.profilePath,
+      this.job,
+      this.character});
+  bool? adult;
+  int? gender;
+  String? knownForDepartment;
+  String? name;
+  String? profilePath;
+  String? character;
+  String? job;
+
+  factory CastPerson.fromJson(Map<String, dynamic> json) => CastPerson(
+        adult: json["adult"],
+        gender: json["gender"],
+        knownForDepartment: json["known_for_department"],
+        name: json["name"],
+        profilePath: json["profile_path"],
+        character: json["character"],
+        job: json["job"],
       );
 }

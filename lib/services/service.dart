@@ -32,6 +32,42 @@ Future<MoviesReponse> getTopRatedMovies() async {
   }
 }
 
+Future<MoviesReponse> getNowPlayingMovie() async {
+  endPoint = 'movie/now_playing';
+  final url = '$baseUrl$endPoint$key';
+  final response = await Dio().get(url);
+
+  if (response.statusCode == 200) {
+    return MoviesReponse.fromJson(response.data);
+  } else {
+    throw Exception('failed to load data');
+  }
+}
+
+Future<MoviesReponse> getSimilarMovies(id, bool movie) async {
+  endPoint = movie ? 'movie/$id/similar' : 'tv/$id/similar';
+  final url = '$baseUrl$endPoint$key';
+  final response = await Dio().get(url);
+
+  if (response.statusCode == 200) {
+    return MoviesReponse.fromJson(response.data);
+  } else {
+    throw Exception('failed to load data');
+  }
+}
+
+Future<Cast> getCast(id, bool movie) async {
+  endPoint = movie ? 'movie/$id/credits' : 'tv/$id/credits';
+  final url = '$baseUrl$endPoint$key';
+  final response = await Dio().get(url);
+
+  if (response.statusCode == 200) {
+    return Cast.fromJson(response.data);
+  } else {
+    throw Exception('failed to load data');
+  }
+}
+
 Future<MoviesReponse> getPopularTvShows() async {
   endPoint = 'tv/popular';
   final url = '$baseUrl$endPoint$key';

@@ -23,8 +23,8 @@ class MoviesList extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           var data = snapshot.data?.results;
-          return Padding(
-            padding: const EdgeInsets.all(15.0),
+          return Container(
+            padding: const EdgeInsets.only(left: 15.0, right: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

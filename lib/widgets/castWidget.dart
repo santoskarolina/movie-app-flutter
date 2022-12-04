@@ -17,13 +17,13 @@ class CastList extends StatelessWidget {
   Widget build(BuildContext context) {
     var noImage =
         'https://www.kibrispdr.org/data/753/no-image-found-png-23.png';
-
     return FutureBuilder<Cast>(
       future: future,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           var data = snapshot.data?.cast;
-          return SizedBox(
+          return Container(
+            padding: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -32,10 +32,10 @@ class CastList extends StatelessWidget {
                   style: const TextStyle(color: Colors.white, fontSize: 22.0),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 2,
                 ),
                 SizedBox(
-                  height: 310,
+                  height: 210,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: data!.length,

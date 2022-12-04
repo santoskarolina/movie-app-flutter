@@ -32,20 +32,20 @@ class _MovieDetailsState extends State<MovieDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<Movie>(
-        future: movieFuture,
-        builder: (context, snapshot) {
+      body: FutureBuilder(
+        future: Future.wait([movieFuture, castFuture, simularMoviesFuture]),
+        builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-            var movieResponse = snapshot.data;
+            var movieResponse = snapshot.data[0] as Movie;
             var movieDate = widget.movie
-                ? movieResponse!.releaseDate
-                : movieResponse!.firstAirDate;
+                ? movieResponse.releaseDate!
+                : movieResponse.firstAirDate!;
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
-                  pinned: true,
-                  snap: true,
-                  floating: true,
+                  // pinned: true,
+                  // snap: true,
+                  // floating: true,
                   expandedHeight: MediaQuery.of(context).size.width * 0.9,
                   flexibleSpace: FlexibleSpaceBar(
                     stretchModes: const <StretchMode>[
@@ -66,41 +66,10 @@ class _MovieDetailsState extends State<MovieDetails> {
                         decoration: TextDecoration.none,
                       ),
                     ),
-                    background: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        movieResponse.backdropPath != null
-                            ? Image.network(
-                                '$imageUrl${movieResponse.backdropPath}',
-                                fit: BoxFit.cover)
-                            : Container(
-                                color: Colors.grey,
-                              ),
-                        const DecoratedBox(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.center,
-                              colors: <Color>[
-                                Color(0x60000000),
-                                Color(0x00000000),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    background: backgroundAppBar(movieResponse),
                   ),
                 ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (_, int index) {
-                      return ContextBoxMovie(movieResponse, movieDate,
-                          widget.movie, simularMoviesFuture, castFuture);
-                    },
-                    childCount: 1,
-                  ),
-                ),
+                sliverList(movieResponse, movieDate),
               ],
             );
           }
@@ -113,6 +82,42 @@ class _MovieDetailsState extends State<MovieDetails> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Stack backgroundAppBar(Movie movieResponse) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        movieResponse.backdropPath != null
+            ? Image.network('$imageUrl${movieResponse.backdropPath!}',
+                fit: BoxFit.cover)
+            : Container(color: Colors.blue[500]),
+        const DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.bottomCenter,
+              end: Alignment.center,
+              colors: <Color>[
+                Color(0x60000000),
+                Color(0x00000000),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  SliverList sliverList(Movie movieResponse, DateTime? movieDate) {
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, int index) {
+          return ContextBoxMovie(movieResponse, movieDate, widget.movie,
+              simularMoviesFuture, castFuture);
+        },
+        childCount: 1,
       ),
     );
   }

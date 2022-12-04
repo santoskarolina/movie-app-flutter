@@ -5,7 +5,8 @@ import '../services/service.dart';
 
 Widget LastEpisodeWidget(Movie movie, bool movieRe) {
   return movieRe
-      ? Column(
+      ? const SizedBox(height: 0.0)
+      : Column(
           children: [
             Container(
               padding:
@@ -44,10 +45,11 @@ Widget LastEpisodeWidget(Movie movie, bool movieRe) {
                               },
                             )
                           : SizedBox(
-                              child: Image.asset('assets/no-image.png'))),
-                  const SizedBox(
-                    height: 5,
-                  ),
+                              child: Image.asset('assets/no-image.png',
+                                  fit: BoxFit.cover),
+                              height: 240,
+                              width: 170,
+                            )),
                   Container(
                     width: 170,
                     height: 50,
@@ -56,26 +58,10 @@ Widget LastEpisodeWidget(Movie movie, bool movieRe) {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(movie.lastEpisode!.name!,
+                        Text(movie.lastEpisode?.name ?? 'Sem nome',
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                                 color: Colors.white, fontSize: 20.0)),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 5),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                            movie.lastEpisode!.airDate!
-                                .toString()
-                                .split('-')[0],
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 16.0)),
                       ],
                     ),
                   ),
@@ -83,8 +69,5 @@ Widget LastEpisodeWidget(Movie movie, bool movieRe) {
               ),
             ),
           ],
-        )
-      : const SizedBox(
-          height: 10.0,
         );
 }

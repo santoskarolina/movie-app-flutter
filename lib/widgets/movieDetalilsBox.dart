@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/models/movie.model.dart';
 import 'package:movie_app/widgets/castWidget.dart';
 import 'package:movie_app/widgets/circleMovieInfos.dart';
-import 'package:movie_app/widgets/genresWidget.dart';
 import 'package:movie_app/widgets/lastEpisode.dart';
 import 'package:movie_app/widgets/moviesList.dart';
 import 'package:movie_app/widgets/overviewWidget.dart';
@@ -15,6 +14,7 @@ Widget ContextBoxMovie(Movie movieResponse, movieDate, bool movie,
       // height: MediaQuery.of(context).size.width,
       color: const Color.fromARGB(255, 1, 21, 36),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // GenresWidget(movieResponse),
           Row(
@@ -30,20 +30,14 @@ Widget ContextBoxMovie(Movie movieResponse, movieDate, bool movie,
             ],
           ),
           OverviewWidget(movieResponse),
-          const SizedBox(
-            height: 10.0,
-          ),
           SeassonWidget(movieResponse, movie),
-          const SizedBox(
-            height: 10.0,
-          ),
+          LastEpisodeWidget(movieResponse, movie),
+          CastList(headlineText: 'Cast', future: castFuture),
           MoviesList(
               headlineText: 'Similar',
               topRatedMovies: false,
               future: simularMoviesFuture,
               movie: movie),
-          LastEpisodeWidget(movieResponse, movie),
-          CastList(headlineText: 'Cast', future: castFuture),
         ],
       ));
 }

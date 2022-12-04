@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:movie_app/models/genres.model.dart';
 import 'package:movie_app/models/movie.model.dart';
 import 'package:movie_app/utils/constants.dart';
 
@@ -7,8 +8,8 @@ const baseUrl = 'https://api.themoviedb.org/3/';
 var key = '?api_key=$acessKey';
 late String endPoint;
 
-Future<MoviesReponse> getPopularMovies() async {
-  endPoint = 'movie/popular';
+Future<MoviesReponse> getPopularMovies(bool movie) async {
+  endPoint = movie ? 'movie/popular' : 'tv/popular';
   final url = "$baseUrl$endPoint$key";
 
   final response = await Dio().get(url);
@@ -68,20 +69,8 @@ Future<Cast> getCast(id, bool movie) async {
   }
 }
 
-Future<MoviesReponse> getPopularTvShows() async {
-  endPoint = 'tv/popular';
-  final url = '$baseUrl$endPoint$key';
-  final response = await Dio().get(url);
-
-  if (response.statusCode == 200) {
-    return MoviesReponse.fromJson(response.data);
-  } else {
-    throw Exception('failed to load data');
-  }
-}
-
-Future<Movie> getMoviebyId(int id) async {
-  endPoint = 'movie/$id';
+Future<Movie> getMoviebyId(int id, bool movie) async {
+  endPoint = movie ? 'movie/$id' : 'tv/$id';
   final url = '$baseUrl$endPoint$key';
 
   final response = await Dio().get(url);
@@ -92,13 +81,13 @@ Future<Movie> getMoviebyId(int id) async {
   }
 }
 
-Future<Movie> getTVbyId(int id) async {
-  endPoint = 'tv/$id';
+Future<GenresResponse> getGenres() async {
+  endPoint = 'genre/movie/list';
   final url = '$baseUrl$endPoint$key';
 
   final response = await Dio().get(url);
   if (response.statusCode == 200) {
-    return Movie.fromJson2(response.data);
+    return GenresResponse.fromJson(response.data);
   } else {
     throw Exception('failed to load data');
   }

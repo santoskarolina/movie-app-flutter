@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/pages/movieDatails.dart';
 import 'package:movie_app/services/service.dart';
 
-Widget MovieBox(data, index, context, bool movie) {
+Widget MovieBox(data, index, context, bool movie, bool topRatedMovies) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 3),
     child: Column(
@@ -19,29 +19,32 @@ Widget MovieBox(data, index, context, bool movie) {
                         )));
           },
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Image.network(
-              '$imageUrl${data[index].posterPath}',
-              height: 240,
-              width: 170,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  height: 240,
-                  width: 170,
-                  color: Colors.grey,
-                );
-              },
-            ),
-          ),
+              borderRadius: BorderRadius.circular(20),
+              child: data[index].posterPath != null
+                  ? Image.network(
+                      '$imageUrl${data[index].posterPath}',
+                      height: 240,
+                      width: topRatedMovies
+                          ? MediaQuery.of(context).size.height * 0.5
+                          : 180,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.asset(
+                      'assets/no-image.png',
+                      height: 240,
+                      fit: BoxFit.cover,
+                      width: topRatedMovies
+                          ? MediaQuery.of(context).size.height * 0.5
+                          : 180,
+                    )),
         ),
         const SizedBox(
-          height: 5,
+          height: 1,
         ),
         Container(
-          width: 170,
-          height: 50,
-          margin: const EdgeInsets.only(left: 5),
+          width:
+              topRatedMovies ? MediaQuery.of(context).size.height * 0.5 : 150,
+          margin: const EdgeInsets.only(left: 5, top: 2),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,

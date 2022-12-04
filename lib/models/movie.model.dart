@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'package:movie_app/models/genres.model.dart';
 
 class MoviesReponse {
   MoviesReponse({
@@ -67,7 +67,7 @@ class Movie {
   double? voteAverage;
   int? voteCount;
   int? runtime;
-  List<dynamic>? genres;
+  List<GenreMoviesList>? genres;
   String? name;
   String? originalName;
   DateTime? firstAirDate;
@@ -115,7 +115,8 @@ class Movie {
         originalTitle: json["original_title"],
         overview: json["overview"],
         posterPath: json["poster_path"],
-        genres: List<dynamic>.from(json["genres"]),
+        genres: List<GenreMoviesList>.from(
+            json["genres"].map((x) => GenreMoviesList.fromJson(x))),
         popularity: json["popularity"].toDouble(),
         releaseDate: json["release_date"] == null
             ? null

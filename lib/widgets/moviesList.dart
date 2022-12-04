@@ -3,16 +3,18 @@ import 'package:movie_app/models/movie.model.dart';
 import 'package:movie_app/widgets/movieBoxComp.dart';
 
 class MoviesList extends StatelessWidget {
-  const MoviesList({
-    Key? key,
-    required this.headlineText,
-    required this.future,
-    required this.movie,
-  }) : super(key: key);
+  const MoviesList(
+      {Key? key,
+      required this.headlineText,
+      required this.future,
+      required this.movie,
+      required this.topRatedMovies})
+      : super(key: key);
 
   final String headlineText;
   final bool movie;
   final Future<MoviesReponse> future;
+  final bool topRatedMovies;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class MoviesList extends StatelessWidget {
                   style: const TextStyle(color: Colors.white, fontSize: 22.0),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 SizedBox(
                   height: 310,
@@ -39,7 +41,8 @@ class MoviesList extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: data!.length,
                     itemBuilder: (context, index) {
-                      return MovieBox(data, index, context, movie);
+                      return MovieBox(
+                          data, index, context, movie, topRatedMovies);
                     },
                   ),
                 ),

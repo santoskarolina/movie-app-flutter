@@ -16,33 +16,29 @@ class GenresWidget extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           var data = snapshot.data?.genres;
-          return Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 30,
-                  // alignment: Alignment.center,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: data!.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                          margin: const EdgeInsets.only(left: 2.0, right: 2.0),
-                          child: Chip(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            side: const BorderSide(width: 0),
-                            label: Text(
-                              data[index].name!,
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                          ));
-                    },
-                  ),
-                ),
-              ],
+          return Container(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              height: 30,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: data!.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                      margin: const EdgeInsets.only(left: 2.0, right: 2.0),
+                      child: Chip(
+                        backgroundColor:
+                            const Color.fromARGB(255, 108, 104, 104),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        side: const BorderSide(width: 0),
+                        label: Text(
+                          data[index].name!,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ));
+                },
+              ),
             ),
           );
         } else {

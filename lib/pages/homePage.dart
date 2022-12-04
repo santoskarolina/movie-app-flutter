@@ -46,40 +46,31 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget homeBox() {
-    return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.fromLTRB(2.0, 20.0, 2.0, 0.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            HeaderComp(),
-            SearchComp(),
-            GenresWidget(future: genresFuture!),
-            MoviesList(
-              headlineText: 'Top rated',
-              future: topRatedMovies!,
-              movie: true,
-              topRatedMovies: true,
-            ),
-            MoviesList(
-              headlineText: 'Popular movies',
-              future: popularMoviesFuture!,
-              movie: true,
-              topRatedMovies: false,
-            ),
-            MoviesList(
-              headlineText: 'Popular movies',
-              future: popularMoviesFuture!,
-              movie: true,
-              topRatedMovies: false,
-            ),
-            MoviesList(
-                headlineText: 'Popular tv shows',
-                future: popularTvFuture!,
-                movie: false,
-                topRatedMovies: false),
-          ],
-        ),
+    return Container(
+      padding: const EdgeInsets.fromLTRB(2.0, 20.0, 2.0, 0.0),
+      child: ListView(
+        children: [
+          HeaderComp(),
+          SearchComp(),
+          GenresWidget(future: genresFuture!),
+          MoviesList(
+            headlineText: 'Top rated',
+            future: topRatedMovies!,
+            movie: true,
+            topRatedMovies: true,
+          ),
+          MoviesList(
+            headlineText: 'Popular movies',
+            future: popularMoviesFuture!,
+            movie: true,
+            topRatedMovies: false,
+          ),
+          MoviesList(
+              headlineText: 'Popular tv shows',
+              future: popularTvFuture!,
+              movie: false,
+              topRatedMovies: false),
+        ],
       ),
     );
   }
